@@ -4,7 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as ps
-plt.style.use('seaborn-darkgrid')
+plt.style.use('Solarize_Light2')
 from scipy import special
 
 def Ingreso(sel,Titulo):
@@ -47,8 +47,8 @@ def Ingreso(sel,Titulo):
         S = val[6]
         ht = val[7]
         Tmax = val[8]
-        v = [9]
-        Tol = [10]
+        v = val[9]
+        Tol = val[10]
        
         return a,b,N,Ta,Tb,k,S,ht,Tmax,v,Tol
     else:    
@@ -92,13 +92,18 @@ def Constantes(a,b,N,ht,Tmax,K,v):
         Distancia total del dominio
 
     """
+#    v = float(v)
     h = (b-a)/(N+1)
     x = np.linspace(a,b,N+2)
     lar = b-a
     Nt = int(Tmax / ht)
     r = ht * K / (h*h)
-    p = ht * v / (2*h)
+    p = ht *  v / (2*h)
     return h,x,lar,Nt,r, p
+
+def Dominio(a,b,N)
+    x = np.linspace(a,b,N+2)
+    return x
 
 def Vector_aux(Ta,Tb,N,q):
     """
@@ -238,7 +243,17 @@ def Graficas(xa,ua,Titulo):
     plt.xlabel('$x$')
     plt.ylabel('$u(x)$')
     plt.title(Titulo)
+    plt.grid(color = 'w')
     plt.legend()
+    plt.show()
+    
+def Graficas_Error(Error):
+    plt.plot(Error)
+    plt.yscale('log')
+    plt.xlabel('$n$')
+    plt.ylabel('$RMS$')
+    plt.grid(color = 'w')
+    plt.title('')
     plt.show()
     
 

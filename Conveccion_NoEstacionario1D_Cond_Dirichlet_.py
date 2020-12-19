@@ -50,7 +50,8 @@ print("Constante r: ",r)
 print("Constante p: ",p)
 print("---------------------------------------------------\n")
 
-x = np.linspace(a,b,N+2)
+# Discretización del dominio
+x = fun.Dominio(a,b,N)
 #Llamada al vector auxiliar
 u = fun.Vector_aux(Ta,Tb,N,0)
 
@@ -98,11 +99,4 @@ for n in range(1,Nt+1):
 
 
 fun.Graficas(xa,ua,'Solución Analítica y Numérica')
-
-
-plt.plot(error)
-plt.yscale('log')
-plt.xlabel('$n$')
-plt.ylabel('$RMS$')
-plt.grid()
-plt.show()
+fun.Graficas_Error(error)
