@@ -1,5 +1,6 @@
 # PROGRAMA QUE CONTIENE LAS FUNCIONES PARA EL CÁLCULO DE LA SOLUCIÓN
-# DE LA ECUACIÓN DE CALOR
+# DE LA ECUACIÓN DE CALOR EN ESTADO NO ESTACIONARIO Y CONSIDERANDO EL 
+# TÉRMINO CONVECTIVO
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,6 +34,14 @@ def Ingreso(sel,Titulo):
         Valor de la fuente
     k : float
         Valor de la conductividad térmica
+    ht : float
+        Tamaño de paso en el tiempo
+    Tmax: float
+        Tiempo máximo hasta el cual calculamos la solución
+    v : floar
+        Velocidad del fluido en movimiento
+    Tol : float
+        Tolerancia del algoritmo
         
 
     """
@@ -60,10 +69,10 @@ def Ingreso(sel,Titulo):
         Tb = float(input("Ingrese la temperaruta al final.                Tb="))
         k = float(input("Ingrese la conductividad térmica.               k="))
         S = float(input("Ingrese las fuentes o sumideros.                S="))
-        ht = float(input("Ingrese el paso del tiempo.                ht="))
-        Tmax= float(input("Ingrese el tiempo maximo.                Tmax="))
-        v = float(input("Ingrese la velocidad.                v="))
-        Tol = float(input("Ingrese la Tolerancia.                Tol="))
+        ht = float(input("Ingrese el paso del tiempo.                     ht="))
+        Tmax= float(input("Ingrese el tiempo maximo.                       Tmax="))
+        v = float(input("Ingrese la velocidad.                           v="))
+        Tol = float(input("Ingrese la Tolerancia.                          Tol="))
         return a,b,N,Ta,Tb,k,S, ht, Tmax,v,Tol
 
 def Constantes(a,b,N,ht,Tmax,K,v):
@@ -80,6 +89,12 @@ def Constantes(a,b,N,ht,Tmax,K,v):
         Número de nodos.
     ht : float
          Paso en el tiempo
+    k : float
+        Valor de la conductividad térmica
+    Tmax: float
+        Tiempo máximo hasta el cual calculamos la solución
+    v : floar
+        Velocidad del fluido en movimiento
          
 
     Returns
@@ -90,6 +105,10 @@ def Constantes(a,b,N,ht,Tmax,K,v):
         Vector con el cual se graficará
     lar : float
         Distancia total del dominio
+    Nt: Int
+        Número de nodos en el tiempo
+    r : float
+    p : float
 
     """
 #    v = float(v)
@@ -101,7 +120,25 @@ def Constantes(a,b,N,ht,Tmax,K,v):
     p = ht *  v / (2*h)
     return h,x,lar,Nt,r, p
 
-def Dominio(a,b,N)
+def Dominio(a,b,N):
+    """
+    Esta función genera la malla del dominio.
+
+    Parameters
+    ----------
+    a : Float
+        Incio del dominio.
+    b : Float
+        Fin del dominio.
+    N : Int
+        Numero de nodos.
+
+    Returns
+    -------
+    x : float
+        Vector de la malla del dominio.
+
+    """
     x = np.linspace(a,b,N+2)
     return x
 
@@ -131,34 +168,6 @@ def Vector_aux(Ta,Tb,N,q):
     b[-1] = Tb
     return b + q
 
-def Matriz_Diagonal_atras(N,r):
-    """
-    Esta función genera la matriz diagonal necesaria en la resolución del 
-    problema.    
-
-    Parameters
-    ----------
-    N : Integer
-        Número de nodos.
-    cons : Integer
-        Valor en la diagonal
-
-    Returns
-    -------
-    A : float
-        Matriz diagonal
-
-    """
-    A = np.zeros((N,N))
-    A[0,0] = 1 + 2 * r; 
-    A[0,1] = -r
-    for i in range(1,N-1):
-        A[i,i] = 1 + 2 * r 
-        A[i,i+1] = -r
-        A[i,i-1] = -r
-    A[N-1,N-2] = -r; 
-    A[N-1,N-1] = 1 + 2 * r
-    return A
 
 def Matriz_Diagonal_Conv_Noest(N,r,p):
     """
@@ -169,7 +178,9 @@ def Matriz_Diagonal_Conv_Noest(N,r,p):
     ----------
     N : Integer
         Número de nodos.
-    cons : Integer
+    r : Float
+        Valor en la diagonal
+    p : Float
         Valor en la diagonal
 
     Returns
@@ -248,7 +259,21 @@ def Graficas(xa,ua,Titulo):
     plt.show()
     
 def Graficas_Error(Error):
+    """
+    Esta función grafica el error calculado.
+
+    Parameters
+    ----------
+    Error : float
+        Vector que contiene el error de la solución.
+
+    Returns
+    -------
+    None.
+
+    """
     plt.plot(Error)
+    plt.title('Error en la solución')
     plt.yscale('log')
     plt.xlabel('$n$')
     plt.ylabel('$RMS$')
@@ -260,60 +285,37 @@ def Graficas_Error(Error):
     
 def Sol_Analitica(a,b,K,Tmax,N,v):  
     """
-    Esta funcion genera un vector que contiene la solución analítica
-    del problema 1
+    Esta función genera un vector que contiene la solución exacta al problema.
 
     Parameters
     ----------
-    Ta : float
-        Temperatura en la frontera del inicio.
-    Tb : float
-        Temperatura en la frontera del final.
-    x : float
-        Vector con el cual se graficará
+    a : float
+        Valor al inicio del dominio.
+    b : float
+        Valor al final del dominio.
     N : Integer
         Número de nodos.
-    a : float
-        Inicio de barra.
-    b : float
-        Fin de la barra.
+    k : float
+        Valor de la conductividad térmica
+    Tmax: float
+        Tiempo máximo hasta el cual calculamos la solución
+    v : floar
+        Velocidad del fluido en movimiento
+         
     Returns
     -------
-    sol: float
-        Solución análitica.
+    xa : float.
+        Malla del dominio sin incluir las fronteras.
+    ua : float.
+        Solución exacta al problema.
 
     """
-    
     xa = np.linspace(a, b, N)
     
     divisor = 2 * np.sqrt(K * Tmax)
     ua = 0.5 * (special.erfc((xa - v * Tmax)/ divisor) + 
                 np.exp(v * xa) * np.exp(-K) * special.erfc((xa + v * Tmax)/divisor))
     return (xa, ua)
-
-
-def Error(u,u_exa,N):
-    """
-    Esta función genera un vector que contiene la diferencia entre los 
-    valores de las soluciones y devuelve la suma de este.    
-
-    Parameters
-    ----------
-    u : float
-        Vector que contiene la solución numérica del problema
-    u_exa : float
-        Vector que contiene la solución analítica del problema
-
-    Returns
-    -------
-    error: float
-        Diferencia entre los valores obtenidos numérica y analíticamente.
-
-    """
-    error = np.zeros(N+2)
-    for i in range(N+2):
-        error[i] = u[i] - u_exa[i]
-    return sum(error)
     
 def Escritura(u,u_exa):
     """
@@ -335,6 +337,6 @@ def Escritura(u,u_exa):
     serie2 = ps.Series(u_exa)
     tabla = ps.DataFrame(serie1,columns = ['Solución analítica'])
     tabla['Solución numérica'] = serie2
-    np.savetxt('Solución1.txt',tabla,fmt='%f', header = 'Soluciones del problema')
+    np.savetxt('Solución1.txt',tabla,fmt='%f', header = 'Sol. Analítica    Sol. Exacta')
     
     
