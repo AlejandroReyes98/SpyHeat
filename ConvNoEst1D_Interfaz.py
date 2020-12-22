@@ -13,12 +13,12 @@ def calcConv():
 	b = float(b1.get())
 	Ta = float(Ta1.get())
 	Tb = float(Tb1.get())
-	K = float(k1.get())
+	K = float(K1.get())
 	Tmax = float(Tmax1.get())
 	N = int(N1.get())
 	S = float(S1.get())
 	ht = float(ht1.get())
-	v = float(u1.get())
+	v = float(v1.get())
 	Tol = float(Tol1.get())
 
 	# Cálculo de Constantes
@@ -85,7 +85,7 @@ def calcConv():
 ##############################################################################################################################
 #Comienza el diseño y la funcionalidad 
 root = Tk()
-root.geometry("320x200")
+root.geometry("350x250")
 root.title("Transferencia de Calor 1D")
 
 l1 = Label(root, text='Punto de inicio del conductor: ')
@@ -153,12 +153,12 @@ a1.grid(row=0, column=1)
 b1.grid(row=1, column=1)
 Ta1.grid(row=2, column=1)
 Tb1.grid(row=3, column=1)
-k1.grid(row=4, column=1)
+K1.grid(row=4, column=1)
 Tmax1.grid(row=5, column=1)
 N1.grid(row=6, column=1)
 S1.grid(row=7, column=1)
 ht1.grid(row=8, column=1)
-u1.grid(row=9, column=1)
+v1.grid(row=9, column=1)
 Tol1.grid(row=10, column=1)
 
 
