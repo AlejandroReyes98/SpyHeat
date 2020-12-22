@@ -9,17 +9,17 @@ plt.style.use('Solarize_Light2')
 
 def calcConv():
 	# Ingreso de variables
-	a = int(a.get())
-	b = int(b.get())
-	Ta = float(Ta.get())
-	Tb = float(Tb.get())
-	k = float(k.get())
-	Tmax = float(Tmax.get())
-	N = int(N.get())
-	S = float(S.get())
-	ht = float(ht.get())
-	u = float(u.get())
-	Tol = float(Tol.get())
+	a = int(a1.get())
+	b = int(b1.get())
+	Ta = float(Ta1.get())
+	Tb = float(Tb1.get())
+	k = float(k1.get())
+	Tmax = float(Tmax1.get())
+	N = int(N1.get())
+	S = float(S1.get())
+	ht = float(ht1.get())
+	u = float(u1.get())
+	Tol = float(Tol1.get())
 
 	# Cálculo de Constantes
 	h,x,lar,Nt,r,p = fun.Constantes(a,b,N,ht,Tmax,K,v)
@@ -100,38 +100,38 @@ l9 = Label(root, text='Paso de tiempo: ')
 l10 = Label(root, text='Velocidad: ')
 l11 = Label(root, text='Tolerancia: ')
 
-a = Entry(root)
+a1 = Entry(root)
 a.insert(0,'0')
 
-b = Entry(root)
-b.insert(0,'2.5')
+b1 = Entry(root)
+b1.insert(0,'2.5')
 
-Ta = Entry(root)
-Ta.insert(0,'1')
+Ta1 = Entry(root)
+Ta1.insert(0,'1')
 
-Tb = Entry(root)
-Tb.insert(0,'0')
+Tb1 = Entry(root)
+Tb1.insert(0,'0')
 
-k = Entry(root)
-k.insert(0,'0.001')
+k1 = Entry(root)
+k1.insert(0,'0.001')
 
-Tmax= Entry(root)
-Tmax.insert(0,'1')
+Tmax1= Entry(root)
+Tmax1.insert(0,'1')
 
-N = Entry(root)
-N.insert(0,'300')
+N1 = Entry(root)
+N1.insert(0,'300')
 
-S = Entry(root)
-S.insert(0,'0')
+S1 = Entry(root)
+S1.insert(0,'0')
 
-ht= Entry(root)
-ht.insert(0,'0.002')
+ht1= Entry(root)
+ht1.insert(0,'0.002')
 
-u = Entry(root)
-u.insert(0,'1')
+u1 = Entry(root)
+u1.insert(0,'1')
 
-Tol = Entry(root)
-Tol.insert(0,'1e-6')
+Tol1 = Entry(root)
+Tol1.insert(0,'1e-6')
 
 
 btn = Button(root, text='Calcular y generar grafica', command = calcConv)
