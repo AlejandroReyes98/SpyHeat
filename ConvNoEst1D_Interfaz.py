@@ -9,16 +9,16 @@ plt.style.use('Solarize_Light2')
 
 def calcConv():
 	# Ingreso de variables
-	a = int(a1.get())
-	b = int(b1.get())
+	a = float(a1.get())
+	b = float(b1.get())
 	Ta = float(Ta1.get())
 	Tb = float(Tb1.get())
-	k = float(k1.get())
+	K = float(k1.get())
 	Tmax = float(Tmax1.get())
 	N = int(N1.get())
 	S = float(S1.get())
 	ht = float(ht1.get())
-	u = float(u1.get())
+	v = float(u1.get())
 	Tol = float(Tol1.get())
 
 	# Cálculo de Constantes
@@ -101,7 +101,7 @@ l10 = Label(root, text='Velocidad: ')
 l11 = Label(root, text='Tolerancia: ')
 
 a1 = Entry(root)
-a.insert(0,'0')
+a1.insert(0,'0')
 
 b1 = Entry(root)
 b1.insert(0,'2.5')
@@ -112,8 +112,8 @@ Ta1.insert(0,'1')
 Tb1 = Entry(root)
 Tb1.insert(0,'0')
 
-k1 = Entry(root)
-k1.insert(0,'0.001')
+K1 = Entry(root)
+K1.insert(0,'0.001')
 
 Tmax1= Entry(root)
 Tmax1.insert(0,'1')
@@ -127,8 +127,8 @@ S1.insert(0,'0')
 ht1= Entry(root)
 ht1.insert(0,'0.002')
 
-u1 = Entry(root)
-u1.insert(0,'1')
+v1 = Entry(root)
+v1.insert(0,'1')
 
 Tol1 = Entry(root)
 Tol1.insert(0,'1e-6')
