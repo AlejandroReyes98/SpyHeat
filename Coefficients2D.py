@@ -25,11 +25,14 @@ class Coefficients2D():
     __deltax = None
     __nvy = None
     __deltay = None
-
-    
+    #__Nx = None
+    #__Ny = None
+  
     def __init__(self, nvx = None, nvy = None, deltax = None, deltay = None):
         Coefficients2D.__nvx = nvx
         Coefficients2D.__nvy = nvy
+        #Coefficients2D.__Nx = Nx
+        #Coefficients2D.__Ny = Ny
         Coefficients2D.__deltax = deltax
         Coefficients2D.__deltay = deltay
 
@@ -51,6 +54,10 @@ class Coefficients2D():
     def setDelta(self, deltax, deltay):
         Coefficients2D.__deltax = deltax
         Coefficients2D.__deltay = deltay
+    
+    #def setNodes(self, Nx, Ny):
+    #    Coefficients2D.__Nx = Nx
+    #    Coefficients2D.__Ny = Ny
         
     def aP(self):
         return Coefficients2D.__aP
@@ -69,6 +76,8 @@ class Coefficients2D():
     
     def Su(self):
         return Coefficients2D.__Su
+
+
 
     @staticmethod
     def bcDirichlet(wall, phi):
@@ -185,4 +194,5 @@ if __name__ == '__main__':
 
     coef1.printCoefficients()
     #print(coef1.aP(), coef1.aE(), coef1.aW(), coef1.aN(),coef1.aS(), coef1.Su(), sep = '\n')
-    #print('-' * 20) 
+    print('-' * 20)
+    print(coef1.Nx())

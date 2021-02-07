@@ -41,30 +41,39 @@ class Matrix2D():
         aN = coefficients.aN()
         aS = coefficients.aS()
         A = self.__A
-        A[0][0] = aP[1][1]
-        A[0][1] = -aE[1][1]
-        A[0][4] = aN[1][1]
-        A[4][0] = aS[1][1]  # ¿Por qué el renglón 1?
-        for i in range(1,self.__Nx-1): # range(1,N-3)  <-- (1,2)
-            A[i][i] = aP[i+1][1]
-            # for 
-                A[i][i+1] = -aE[i+1][1]  # ¿Por qué los signos?
-                A[i][i-1] = -aW[i+1][1]
-            # for 
-                A[i][i+4] = aN[i+1][1]
-                A[i+4][i] = aS[i+1][1]
-                #A[i+6][i+2] = aS[i+1][1]
-                #A[i+8][i+4] = aS[i+1][1]
-                #A[i+10][i+6] = aS[i+1][1]
-                #A[i+12][i+8] = aS[i+1][1]
-        A[-1][-1] = aP[-2][-2]
-        A[-1][-2] = -aW[-2][-2]
-        A[-5][-1] = aN[-2][-2]  # ¿Por qué es -2?
-        A[-1][-5] = aS[-2][-2]
+        #def Laplaciano2D(Nx, Ny, diagonal): Nodos
+        Nx = self.__Nx
+        Ny = self.__Ny
+        N = Nx*Ny
+        A = np.zeros((N,N))
 
+# Primero llena los bloques tridiagonales
+        diagonal = aP[1][1]
+        for j in range(0,Ny):
+            ofs = Nx * j
+            A[ofs, ofs] = diagonal; 
+            A[ofs, ofs + 1] = -aE[1][1]
+            for i in range(1,Nx-1):
+                A[ofs + i, ofs + i] = diagonal
+                A[ofs + i, ofs + i + 1] = -aE[1][1]
+                A[ofs + i, ofs + i - 1] = -aW[1][1]
+            A[ofs + Nx - 1, ofs + Nx - 2] = -aE[1][1] 
+            A[ofs + Nx - 1, ofs + Nx - 1] = diagonal 
+
+# Despues llena las dos diagonales externas
+        for k in range(0,N-Nx):
+            A[k, Nx + k] = -aN[1][1]
+            A[Nx + k, k] = -aS[1][1]
+            
+        return A
+          
+
+'''
+No es posible acceder con el metodo get a la matriz modificada
+'''
 if __name__ == '__main__':
 
-    a = Matrix2D(6,6)
+    a = Matrix2D(6,6) # Pasamos el numero de volumenes
     print('-' * 20)  
     print(a.mat())
     print('-' * 20)  
@@ -82,6 +91,7 @@ if __name__ == '__main__':
     #print(df1.aP(), df1.aE(), df1.aW(), df1.Su(), sep = '\n')
     #print('-' * 20)  
     
-    a.build(df1)
-    print(a.mat())
-    print('-' * 20)  
+    A = a.build(df1)
+    print(A)
+    print('-' * 20)
+    print(len(A))

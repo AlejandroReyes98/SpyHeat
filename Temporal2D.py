@@ -28,7 +28,7 @@ class Temporal2D(Coefficients):
         dy_dt = self.__dy / self.__dt
 
         for i in range(1,self.__nvx-1):
-            for j in range(1,self.__nvy-1)
+            for j in range(1,self.__nvy-1):
                 aP[i,j] += rho * dx_dt 
                 Su[i,j] += phi_old[i,j] * dx_dt
 
