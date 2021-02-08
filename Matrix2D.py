@@ -10,8 +10,8 @@ import numpy as np
 class Matrix2D():
     
     def __init__(self, nvx = None, nvy = None):
-        self.__Nx = nvx - 2 
-        self.__Ny = nvy - 2 
+        self.__Nx = nvx  
+        self.__Ny = nvy  
         self.__A = np.eye(self.__Nx*self.__Ny)
 
     def __del__(self):
@@ -21,6 +21,9 @@ class Matrix2D():
         
     def mat(self):
         return self.__A
+    
+    def nodes(self):
+        return self.__Nx, self.__Ny
     
     def build(self, coefficients = None):
 # nx = 5, nvx = 6
@@ -73,7 +76,7 @@ No es posible acceder con el metodo get a la matriz modificada
 '''
 if __name__ == '__main__':
 
-    a = Matrix2D(6,6) # Pasamos el numero de volumenes
+    a = Matrix2D(5,5) # Pasamos el numero de volumenes
     print('-' * 20)  
     print(a.mat())
     print('-' * 20)  

@@ -60,20 +60,24 @@ def calcError(phiA, phiN):
         
 if __name__ == '__main__':
  
-    #Coefficients2D.alloc()
     m = Mesh2D(nx = 5, ny = 5, lenx = 10, leny = 10)
     vol = m.volumes()
     dell = m.delta()
     lenn = m.length()
     coef1 = Coefficients2D(vol[0], vol[1], dell[0], dell[1])
+    #print(coef1.Vol())
     coef1.alloc()
     d = Diffusion2D(vol[0], vol[1], 1, dell[0], dell[1])
+    d.calcCoef()
     ma = Matrix2D(vol[0], vol[1])
     #Aux = ma.build()
     #a = Advection1D(m.volumes())
     #t = Temporal1D(m.volumes()) 
 
-    print(m.delta(), d.aP(), '''a.aP()''', '''t.aP(), Aux''', sep='\n')
+    #print(vol[0], vol[1], dell[0], dell[1])
+    #print(lenn)
+    print(m.delta(), d.aP(), sep='\n')
+    #print(m.delta(), d.aP(), '''a.aP()''', '''t.aP(), Aux''', sep='\n')
 
     printData(Name='Laplace', nvx = 5, nx = 6, longitud = 1.3)
     

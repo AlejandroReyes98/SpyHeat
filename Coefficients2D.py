@@ -76,6 +76,9 @@ class Coefficients2D():
     
     def Su(self):
         return Coefficients2D.__Su
+    
+    def Vol(self):
+        return Coefficients2D.__nvx, Coefficients2D.__nvy
 
 
 
