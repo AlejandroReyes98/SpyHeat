@@ -106,7 +106,7 @@ print('.'+'-'*70+'.')
 #
 Su.shape = Su.size
 Aux3 = np.linalg.solve(Aux,Su)
-Aux3.shape = (N+, N+1)
+Aux3.shape = (N+1, N+1)
 T[1:N+2,1:N+2] = Aux3
 print('Solución = {}'.format(T))
 print('.'+'-'*70+'.')
