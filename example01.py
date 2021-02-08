@@ -41,11 +41,12 @@ import time
 
 longitud = 0.5 # meters
 TI = 100 # °C 
-TD = 100 # °C
+TD = 200 # °C
 TA = 100 # °C 
-TB = 100 # °C 
+TB = 200 # °C 
 k  = 1000 # W/m.K
 N  = 4 # Número de nodos
+q = 0
 #
 # Creamos la malla y obtenemos datos importantes
 #
@@ -73,7 +74,7 @@ fvm.printData(Longitud = longitud,
 df1 = fvm.Diffusion2D(nvx, nvy, Gamma = k, dx = deltax, dy = deltay)
 df1.alloc() # Se aloja memoria para los coeficientes
 df1.calcCoef()
-df1.setSu(0) # Se calculan los coeficientes
+df1.setSu(q) # Se calculan los coeficientes
 #
 # Se construye el arreglo donde se guardará la solución
 #
@@ -82,10 +83,10 @@ T[:,0]  = TI        # Condición de frontera izquierda
 T[:,-1] = TD
 T[0,:]  = TA        # Condición de frontera izquierda
 T[-1,:] = TB        # Condición de frontera derecha
-df1.bcDirichlet('LEFT_WALL', 100)   # Se actualizan los coeficientes
-df1.bcDirichlet('RIGHT_WALL', 100) # de acuerdo a las cond. de frontera
-df1.bcDirichlet('TOP_WALL', 100)
-df1.bcDirichlet('DOWN_WALL', 100) 
+df1.bcDirichlet('LEFT_WALL', TI/2)   # Se actualizan los coeficientes
+df1.bcDirichlet('RIGHT_WALL', TD/2) # de acuerdo a las cond. de frontera
+df1.bcDirichlet('TOP_WALL', TA/2)
+df1.bcDirichlet('DOWN_WALL', TB/2) 
 print('aW = {}'.format(df1.aW()), 
       'aE = {}'.format(df1.aE()), 
       'Su = {}'.format(df1.Su()), 
@@ -113,28 +114,39 @@ print('.'+'-'*70+'.')
 #
 # Se construye un vector de coordenadas del dominio
 #
-plt.imshow(T, cmap='inferno')
-plt.colorbar()
+
+x = malla.createMesh2D()
+f1 = plt.figure()    
+c= plt.contourf(x[0], x[1], T, 8, alpha=.75, cmap='inferno')
+f1.gca().set_aspect('equal')
+f1.colorbar(c, shrink=1.0)
+
+f2 = plt.figure()
+ax = f2.gca(projection='3d')    
+s = ax.plot_surface(x[0], x[1], T, cmap='inferno')
+f2.colorbar(s, shrink=0.5)
+
 plt.show()
 
-x = np.linspace(0,7,7)
+'''
 fig = plt.figure(1)
 ax = plt.axes(projection='3d')
-ax.contour3D(x,x,T,100)
+ax.contour(x[0],x[1],T)
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z');
-ax.view_init(60, 35)
+ax.view_init(90, 90)
 plt.show()
 '''
-x = malla.createMesh2D()
+#x = malla.createMesh2D()
 #
 # Calculamos la solución analítica
 #
-Ta = 800 * x + 100
+#Ta = 800 * x + 100
 #
 #  Se grafica la solución
 #
+'''
 x *= 100 # Transformación a [cm]
 plt.plot(x,Ta, '-', label = 'Sol. analítica') # Sol. analítica
 plt.plot(x,T,'o', label = 'Sol. FVM')

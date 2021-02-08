@@ -67,13 +67,13 @@ class Mesh2D():
         first_volumey = self.__dely / 2
         final_volumex = self.__lenx - first_volumex
         final_volumey = self.__leny - first_volumey
-        self.__x = np.zeros(self.__volx)
-        self.__y = np.zeros(self.__voly)
-        self.__x[1:-1] = np.linspace(first_volumex,final_volumex,self.__volx-2)
+        self.__x = np.zeros(self.__volx+2)
+        self.__y = np.zeros(self.__voly+2)
+        self.__x[1:-1] = np.linspace(first_volumex,final_volumex,self.__volx)
         self.__x[-1] = self.__lenx
-        self.__y[1:-1] = np.linspace(first_volumey,final_volumey,self.__voly-2)
+        self.__y[1:-1] = np.linspace(first_volumey,final_volumey,self.__voly)
         self.__y[-1] = self.__leny
-        self.__X, self.__Y = np.Mesh2Dgrid(self.__x, self.__y)
+        self.__X, self.__Y = np.meshgrid(self.__x, self.__y)
         return self.__X, self.__Y
         
 if __name__ == '__main__':
