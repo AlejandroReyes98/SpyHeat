@@ -82,7 +82,7 @@ if __name__ == '__main__':
     #print(X)
     #print(Y)
     #print('-' * 20)
-    u = np.sin((X,Y))
+    u = np.cos((X,Y))
     #print(X)
     #print(Y)
     #print('-' * 20)

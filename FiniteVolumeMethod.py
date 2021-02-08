@@ -10,7 +10,7 @@ from pandas import DataFrame
 from Mesh2D import Mesh2D
 from Coefficients2D import Coefficients2D
 from Diffusion2D import Diffusion2D
-#from Advection import Advection1D
+from Advection2D import Advection2D
 #from Temporal import Temporal1D
 from Matrix2D import Matrix2D
 import time

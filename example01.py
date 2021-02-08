@@ -41,8 +41,8 @@ import time
 
 longitud = 0.5 # meters
 TI = 100 # °C 
-TD = 200 # °C
-TA = 100 # °C 
+TD = 150 # °C
+TA = 200 # °C 
 TB = 200 # °C 
 k  = 1000 # W/m.K
 N  = 4 # Número de nodos
