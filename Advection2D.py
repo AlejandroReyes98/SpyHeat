@@ -10,9 +10,9 @@ class Advection2D(Coefficients2D):
         self.__rho = rho
         self.__dx = dx
         self.__dy = dy
-        #self.__u = np.zeros(nvx-1)
-        self.__ux = np.zeros((nvx,nvy))
-        self.__uy = np.zeros((nvx,nvy))
+        #self.__u = np.zeros((2,nvx,nvy))
+        self.__ux = np.ones((nvx+2,nvy+2))
+        self.__uy = np.ones((nvx+2,nvy+2))
 
     def __del__(self):
         del(self.__nvx)

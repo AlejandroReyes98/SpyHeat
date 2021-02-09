@@ -31,12 +31,14 @@ def analyticSol(x):
     return (np.exp(rho * u * x / Gamma) - 1) / (np.exp(rho * u * L / Gamma) - 1) * (phiL - phi0) + phi0
 
 L = 1.0 # m
-rho = 1.0 # kg/m^3
+rho = 0.5 # kg/m^3
 u = 2.1 # m/s
 Gamma = 0.1 # kg / m.s
-phi0 = 1 #
-phiL = 0 #
-N = 20 # Número de nodos
+phi0 = 2#
+phiL = 2 #
+phiA=10
+phiB=1
+N = 4 # Número de nodos
 #
 # Creamos la malla y obtenemos datos importantes
 #
@@ -64,6 +66,7 @@ fvm.printData(Longitud = L,
 #
 coef = fvm.Coefficients2D(nvx, nvy, deltax, deltay)
 coef.alloc()
+
 #fvm.Coefficients.alloc(nvx)
 #
 #  Calculamos los coeficientes de FVM de la Difusión
@@ -80,26 +83,54 @@ dif.calcCoef()
 #
 adv = fvm.Advection2D(nvx, nvy, rho = rho, dx = deltax, dy = deltay)
 vol = malla.volumes()
-u = np.array(vol[0],u)
-adv.setU(u, u)
+#u = np.array(vol[0],u)
+
+x = np.zeros(nvx + 2)
+y = np.zeros(nvy + 2)
+x[-1] = L
+y[-1] = L
+
+x[1:-1] = np.linspace(0.5*deltax,L-0.5*deltax,nvx)
+y[1:-1] = np.linspace(0.5*deltay,L-0.5*deltay,nvy)
+
+xg, yg =np.meshgrid(x, y)
+alpha_x = 1.0
+alpha_y = 0.5
+v=np.zeros((2, nvy + 2, nvx + 2))
+#v[0] = -1* np.cos(np.pi * alpha_y * yg) * np.sin(np.pi * rho * xg)
+#v[1] = 1* np.sin(np.pi * alpha_y * yg) * np.cos(np.pi * rho * xg)
+
+v[0]=xg*yg-3
+v[1]=xg*yg*2
+#v[0]=xg*yg
+#v[1]=xg*yg*2
+
+adv.setU(v[0], v[1])
 adv.calcCoef() 
-#print('aW = {}'.format(dif.aW()), 
-#      'aE = {}'.format(dif.aE()), 
-#      'Su = {}'.format(dif.Su()), 
-#      'aP = {}'.format(dif.aP()), sep='\n')
+print(adv.ux(),adv.uy())
+
+print('aW = {}'.format(dif.aW()), 
+      'aE = {}'.format(dif.aE()), 
+      'Su = {}'.format(dif.Su()), 
+      'aP = {}'.format(dif.aP()), sep='\n')
 #print('u = {}'.format(adv.u()))
-#print('.'+'-'*70+'.')
+print('.'+'-'*70+'.')
+
 #
 # Se construye el arreglo donde se guardará la solución
 #
 T = np.zeros((nvx+2, nvy + 2)) # El arreglo contiene ceros
 T[:,0]  = phi0       # Condición de frontera izquierda
 T[:,-1] = phiL      # Condición de frontera derecha
+T[0,:]  = phiA       # Condición de frontera izquierda
+T[-1,:] = phiB      # Condición de frontera derecha
 #
 # Se aplican las condiciones de frontera
 #
 coef.bcDirichlet('LEFT_WALL', phi0/2)   # Se actualizan los coeficientes
 coef.bcDirichlet('RIGHT_WALL', phiL/2) # de acuerdo a las cond. de frontera
+coef.bcDirichlet('TOP_WALL', phiA/2)   # Se actualizan los coeficientes
+coef.bcDirichlet('DOWN_WALL', phiB/2) # de acuerdo a las cond. de frontera
 #print('aW = {}'.format(dif.aW()), 
 #      'aE = {}'.format(dif.aE()), 
 #      'Su = {}'.format(dif.Su()), 
@@ -112,11 +143,15 @@ coef.bcDirichlet('RIGHT_WALL', phiL/2) # de acuerdo a las cond. de frontera
 
 
 Su = coef.Su()  # Vector del lado derecho
+print('.'+'-'*70+'.')
+#print(Su)
+
 vol = malla.volumes()
 A = fvm.Matrix2D(vol[0], vol[1])  # Matriz del sistema
 Aux = A.build(coef)
 
-
+print(Aux)
+print('.'+'-'*70+'.')
 #Su = coef.Su()  # Vector del lado derecho
 #A = fvm.Matrix(malla.volumes())  # Matriz del sistema
 #A.build(coef) # Construcción de la matriz en la memoria

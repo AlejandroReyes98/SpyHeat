@@ -40,7 +40,7 @@ import matplotlib.pyplot as plt
 import time
 
 longitud = 0.5 # meters
-TI = 100 # °C 
+TI = 150 # °C 
 TD = 150 # °C
 TA = 200 # °C 
 TB = 200 # °C 
@@ -83,10 +83,12 @@ T[:,0]  = TI        # Condición de frontera izquierda
 T[:,-1] = TD
 T[0,:]  = TA        # Condición de frontera izquierda
 T[-1,:] = TB        # Condición de frontera derecha
+
 df1.bcDirichlet('LEFT_WALL', TI/2)   # Se actualizan los coeficientes
 df1.bcDirichlet('RIGHT_WALL', TD/2) # de acuerdo a las cond. de frontera
 df1.bcDirichlet('TOP_WALL', TA/2)
-df1.bcDirichlet('DOWN_WALL', TB/2) 
+df1.bcDirichlet('DOWN_WALL', TB/2)
+
 print('aW = {}'.format(df1.aW()), 
       'aE = {}'.format(df1.aE()), 
       'Su = {}'.format(df1.Su()), 
@@ -95,9 +97,12 @@ print('.'+'-'*70+'.')
 #
 # Se construye el sistema lineal de ecuaciones a partir de los coef. de FVM
 #
+
 Su = df1.Su()  # Vector del lado derecho
+
 vol = malla.volumes()
 A = fvm.Matrix2D(vol[0], vol[1])  # Matriz del sistema
+
 Aux = A.build(df1) # Construcción de la matriz en la memoria
 print('A = ', Aux,
       'b = {}'.format(Su), sep='\n')

@@ -1,4 +1,7 @@
-class Temporal2D(Coefficients):
+import numpy as np
+from Coefficients2D import Coefficients2D
+
+class Temporal2D(Coefficients2D):
     
     def __init__(self, nvx = None, nvy = None, rho = None, dx = None, dy = None, dt = None):
         super().__init__(nvx, nvy, dx, dy)
@@ -27,8 +30,8 @@ class Temporal2D(Coefficients):
         dx_dt = self.__dx / self.__dt
         dy_dt = self.__dy / self.__dt
 
-        for i in range(1,self.__nvx-1):
-            for j in range(1,self.__nvy-1):
+        for i in range(self.__nvx):
+            for j in range(self.__nvy):
                 aP[i,j] += rho * dx_dt 
                 Su[i,j] += phi_old[i,j] * dx_dt
 
@@ -38,18 +41,24 @@ if __name__ == '__main__':
     ny = 6
     phi_oldx = np.sin(np.linspace(0,1,nx))
     phi_oldy = np.sin(np.linspace(0,1,ny))
-    phi_old = 
+
+    phi_old = np.meshgrid(phi_oldx,phi_oldy)
+    phi_old2=phi_old[1]+phi_old[0]
+    print(phi_old2)
+
     print('-' * 20)  
-    print(phi_old)
+#    print(phi_old)
     print('-' * 20)  
 
-    tf1 = Temporal1D(6, 1, 1, 1)
-    tf1.alloc(6)
-    tf1.calcCoef(phi_old)
+    tf1 = Temporal2D(6,6, 1, 1, 1,1)
+    tf1.alloc()
+    tf1.calcCoef(phi_old2)
     print(tf1.aP())
+    print(tf1.Su())
     print('-' * 20)  
 
-
+#matriz1
+#matriz2=matriz1
 
 
 
