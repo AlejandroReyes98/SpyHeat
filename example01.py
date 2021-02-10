@@ -45,8 +45,8 @@ TD = 150 # °C
 TA = 200 # °C 
 TB = 200 # °C 
 k  = 1000 # W/m.K
-N  = 4 # Número de nodos
-q = 0
+N  = 20 # Número de nodos
+q = 100000
 #
 # Creamos la malla y obtenemos datos importantes
 #

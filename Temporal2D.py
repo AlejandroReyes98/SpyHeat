@@ -27,13 +27,13 @@ class Temporal2D(Coefficients2D):
         aP = self.aP()
         Su = self.Su()
         rho = self.__rho
-        dx_dt = self.__dx / self.__dt
-        dy_dt = self.__dy / self.__dt
+        dxdy_dt = (self.__dx*self.__dy) / self.__dt
+        #dy_dt = self.__dy / self.__dt
 
         for i in range(self.__nvx):
             for j in range(self.__nvy):
-                aP[i,j] += rho * dx_dt 
-                Su[i,j] += phi_old[i,j] * dx_dt
+                aP[i,j] += rho * dxdy_dt 
+                Su[i,j] += phi_old[i,j] * dxdy_dt
 
 if __name__ == '__main__':
     

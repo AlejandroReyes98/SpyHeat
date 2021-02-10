@@ -32,13 +32,13 @@ def analyticSol(x):
 
 L = 1.0 # m
 rho = 0.5 # kg/m^3
-u = 2.1 # m/s
+u = -0.1 # m/s
 Gamma = 0.1 # kg / m.s
-phi0 = 2#
-phiL = 2 #
-phiA=10
-phiB=1
-N = 4 # Número de nodos
+phi0 = 1#
+phiL = 0 #
+phiA=0
+phiB=0
+N = 20 # Número de nodos
 #
 # Creamos la malla y obtenemos datos importantes
 #
@@ -97,15 +97,15 @@ xg, yg =np.meshgrid(x, y)
 alpha_x = 1.0
 alpha_y = 0.5
 v=np.zeros((2, nvy + 2, nvx + 2))
-#v[0] = -1* np.cos(np.pi * alpha_y * yg) * np.sin(np.pi * rho * xg)
-#v[1] = 1* np.sin(np.pi * alpha_y * yg) * np.cos(np.pi * rho * xg)
+v[0] = -1* np.cos(np.pi * alpha_y * yg) * np.sin(np.pi * rho * xg)
+v[1] = 1* np.sin(np.pi * alpha_y * yg) * np.cos(np.pi * rho * xg)
 
-v[0]=xg*yg-3
-v[1]=xg*yg*2
+#v[0]=xg*yg-3
+#v[1]=xg*yg*2
 #v[0]=xg*yg
 #v[1]=xg*yg*2
 
-adv.setU(v[0], v[1])
+adv.setU(u, u)
 adv.calcCoef() 
 print(adv.ux(),adv.uy())
 

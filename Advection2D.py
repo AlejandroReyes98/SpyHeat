@@ -59,13 +59,16 @@ class Advection2D(Coefficients2D):
         for i in range(self.__nvx):
             for j in range(self.__nvy):
                 # Diferencias Centrales
-                CE = - rho * ux[i,j] * 0.5
-                CW =   rho * ux[i-1,j] * 0.5
-                CN = - rho * uy[i,j] * 0.5
-                CS =   rho * uy[i,j-1] * 0.5
-                # Upwind
-     #           CE = max((-u[i],0)) 
-     #           CW = max((u[i-1],0))
+                #CE = - rho * ux[i,j] * 0.5
+                #CW =   rho * ux[i-1,j] * 0.5
+                #CN = - rho * uy[i,j] * 0.5
+                #CS =   rho * uy[i,j-1] * 0.5
+                # Upwind, integrar
+                CE = max((-ux[i,j],0)) 
+                CW = max((ux[i-1,j],0))
+                CN = max((-uy[i,j],0)) 
+                CS = max((uy[i,j-1],0))
+                
                 aE[i,j] += CE 
                 aW[i,j] += CW
                 aN[i,j] += CN 
